@@ -37,8 +37,9 @@ export default function App() {
 
   function editArticle({ article, newTitle, newBody }) {
     updateArticle({ article, newTitle, newBody }).then((article) => {
+      console.log(article)
       setArticle(article)
-      setArticles()
+      fetchArticles().then(setArticles)
       setEditing(false)
     })
   }

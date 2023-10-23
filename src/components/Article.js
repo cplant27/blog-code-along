@@ -1,4 +1,4 @@
-export default function Article({ article, removeArticle, startEdit}) {
+export default function Article({ article, removeArticle, startEdit }) {
   let timestamp = "";
 
   if (article){
