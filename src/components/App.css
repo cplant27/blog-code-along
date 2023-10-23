@@ -9,7 +9,7 @@
 header {
   display: flex;
   justify-content: space-between;
-  background-color: black;
+  background-color: #179CF0;
   color: white;
   grid-column: 1 / span 2;
   padding: 10px 5px;
@@ -35,7 +35,7 @@ article {
 }
 
 nav {
-  background-color: #dee9ff;
+  background-color: #a8deff;
 }
 
 nav p:hover {
@@ -54,5 +54,10 @@ article .body {
 .error {
   background-color: red;
   color: gold;
+  padding: 5px;
+}
+
+button{
+  margin: 5px;
   padding: 5px;
 }
