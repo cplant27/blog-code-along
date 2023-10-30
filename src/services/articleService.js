@@ -3,13 +3,13 @@
 // to read or write data, they have to go through this service.
 
 import { db } from "../firebaseConfig"
+import formatDate from "./formatDate"
 import { collection, query, getDocs, addDoc, orderBy, limit, Timestamp, doc, deleteDoc, updateDoc } from "firebase/firestore"
 
 
 
 export async function createArticle({ title, body }) {
-  // As this is just fake data for messing around, we'll throw in a quick
-  const data = { title, body, date: Timestamp.now() }
+  const data = { title, body, date: formatDate(Timestamp.now()) }
   const docRef = await addDoc(collection(db, "articles"), data)
   return { id: docRef.id, ...data }
 }
@@ -22,8 +22,6 @@ export async function updateArticle({ article, newTitle, newBody }) {
   return { id, ...data };
 }
 
-// NOT FINISHED: This only gets the first 20 articles. In a real app,
-// you implement pagination.
 export async function fetchArticles() {
   const snapshot = await getDocs(
     query(collection(db, "articles"), orderBy("date", "desc"), limit(20))
@@ -42,3 +40,18 @@ export async function deleteArticle(article) {
   await deleteDoc(articleRef);
 }
 
+
+export async function populateSelectFromArticlesField() {
+  let articleTitles = [];
+  const articlesCollection = collection(db, "articles");
+  const articleSnapshot = await getDocs(articlesCollection);
+  
+  articleSnapshot.forEach(doc => {
+      const title = doc.data().title;
+      if(title) {
+          articleTitles.push(title);
+      }
+  });
+
+  return articleTitles;
+}

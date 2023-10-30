@@ -37,7 +37,6 @@ export default function App() {
 
   function editArticle({ article, newTitle, newBody }) {
     updateArticle({ article, newTitle, newBody }).then((article) => {
-      console.log(article)
       setArticle(article)
       fetchArticles().then(setArticles)
       setEditing(false)
@@ -57,11 +56,6 @@ export default function App() {
     setArticle(null);
   }
 
-  async function startEdit(article) {
-    setEditing(true)
-    article.edited = true
-  }
-
   return (
     <div className="App">
       <header>
@@ -75,11 +69,11 @@ export default function App() {
       {!user ? (
         ""
       ) : writing ? (
-        <ArticleEntry article={article} addArticle={addArticle} editing={editing} goBack={goBack}/>
+        <ArticleEntry addArticle={addArticle} editing={editing} goBack={goBack}/>
       ) : editing ? (
         <ArticleEdit article={article} goBack={goBack} editArticle={editArticle} />
       ) : (
-        <Article article={article} removeArticle={removeArticle} startEdit={startEdit} />
+        <Article article={article} removeArticle={removeArticle} setEditing={setEditing} />
       )}
     </div>
   )
