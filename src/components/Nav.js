@@ -1,28 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { populateSelectFromArticlesField } from '../services/articleService';
 
-export default function Nav({ articles, setArticle }) {
-  const [articleTitles, setArticleTitles] = useState([]);
+export default function Nav({ articles, setArticle, selectedTag, setSelectedTag}) {
+  const [articleTags, setArticleTags] = useState([]);
 
   useEffect(() => {
-    const fetchTitles = async () => {
-      const titles = await populateSelectFromArticlesField();
-      setArticleTitles(titles);
+    const fetchTags = async () => {
+      const tags = await populateSelectFromArticlesField();
+      setArticleTags(tags);
     };
 
-    fetchTitles();
+    fetchTags();
   }, [articles]);
+
+  const filteredArticles = selectedTag ? articles.filter(article => article.tags.includes(selectedTag)) : articles;
 
   return (
     <nav>
-      <select >
-        <option id="tagSelect">-- Filter by Tags --</option>
-        {articleTitles.map(title => <option key={title} value={title}>{title}</option>)}
+      <select 
+        value={selectedTag || '-- Filter by Tags --'} 
+        onChange={e => setSelectedTag(e.target.value === '-- Filter by Tags --' ? null : e.target.value)}
+      >
+        <option value="-- Filter by Tags --">-- Filter by Tags --</option>
+        {articleTags.map(tag => <option key={tag} value={tag}>{tag}</option>)}
       </select>
-      {!articles
+      {!filteredArticles
         ? "No articles"
-        : articles.map((a) => (
-            <p key={a.id} onClick={() => setArticle(a)}>
+        : filteredArticles.map((a) => (
+            <p className="articleChoice" key={a.id} onClick={() => setArticle(a)}>
               {a.title}
             </p>
           ))}

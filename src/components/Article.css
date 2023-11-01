@@ -1,0 +1,34 @@
+h2 {
+    font-size: 2em;
+    margin: 0px;
+    margin-bottom: 0px;
+}
+
+.tags {
+    font-size: 0.8em;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: blue;
+}
+
+.tags span:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.date {
+    font-style: italic;
+    margin: 0px;
+    font-size:.8em;
+}
+
+.body {
+    white-space: break-spaces;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.editDelete{
+    margin-top: 10px;
+}
+

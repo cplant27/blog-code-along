@@ -8,14 +8,14 @@ import { collection, query, getDocs, addDoc, orderBy, limit, Timestamp, doc, del
 
 
 
-export async function createArticle({ title, body }) {
-  const data = { title, body, date: formatDate(Timestamp.now()) }
+export async function createArticle({ title, body, tags }) {
+  const data = { title: title, body: body, tags:tags, date: formatDate(Timestamp.now()) }
   const docRef = await addDoc(collection(db, "articles"), data)
   return { id: docRef.id, ...data }
 }
 
-export async function updateArticle({ article, newTitle, newBody }) {
-  const data = { title: newTitle, body: newBody, edited: true, date: article.date };
+export async function updateArticle({ article, newTitle, newBody, newTags }) {
+  const data = { title: newTitle, body: newBody, edited: true, tags: newTags, date: article.date };
   const id = article.id
   const docRef = doc(db, "articles", id);
   await updateDoc(docRef, data);
@@ -42,16 +42,16 @@ export async function deleteArticle(article) {
 
 
 export async function populateSelectFromArticlesField() {
-  let articleTitles = [];
+  let articleTags = new Set(); // Use a Set to ensure uniqueness
   const articlesCollection = collection(db, "articles");
   const articleSnapshot = await getDocs(articlesCollection);
-  
+
   articleSnapshot.forEach(doc => {
-      const title = doc.data().title;
-      if(title) {
-          articleTitles.push(title);
-      }
+    const tags = doc.data().tags; // Assuming each document has a field named 'tags' that is an array
+    if (tags) {
+      tags.forEach(tag => articleTags.add(tag));
+    }
   });
 
-  return articleTitles;
+  return Array.from(articleTags); // Convert Set to Array
 }
