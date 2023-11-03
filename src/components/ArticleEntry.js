@@ -18,6 +18,12 @@ export default function ArticleEntry({ article, addArticle, editing, goBack }) {
     }
   }
 
+  function handleKeyPress(e) {
+    if (e.key === 'Enter') {
+      submit(e);
+    }
+  }
+
   function handleTagChange(e) {
     const tagInput = e.target.value;
     setCurrentTag(tagInput);
@@ -30,17 +36,19 @@ export default function ArticleEntry({ article, addArticle, editing, goBack }) {
       <form onSubmit={submit}>
         {error && <p className="error">{error}</p>}
         Title
-        <input value={title} onChange={(e) => setTitle(e.target.value)}/>
+        <input value={title} onChange={(e) => setTitle(e.target.value)} onKeyPress={handleKeyPress}/>
         Body
         <textarea
           rows="8"
           value={body}
           onChange={(e) => setBody(e.target.value)}
+          onKeyPress={handleKeyPress}
         ></textarea>
         Tags
         <input 
           value={currentTag} 
           onChange={handleTagChange} 
+          onKeyPress={handleKeyPress}
           placeholder="Separate tags by commas"
         />
         <div id="buttonSpace">
